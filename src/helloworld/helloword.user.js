@@ -3,7 +3,7 @@
 // @namespace       https://github.com/suyu0925/UserScript
 // @description     My first user script
 // @include         *://*/*
-// @version         1.0
+// @version         1.0.1
 // ==/UserScript==
 
 // prepend a paragraph element
