@@ -11,5 +11,4 @@ const p = document.createElement('p')
 document.body.prepend(p)
 
 // set text content
-const version = GM.info.version
-p.textContent = `hello world from greasemonkey ${version}`
+p.textContent = `Hello World from ${GM.info.scriptHandler} ${GM.info.version}`
