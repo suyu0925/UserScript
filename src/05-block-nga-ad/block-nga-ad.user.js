@@ -4,7 +4,7 @@
 // @description     Block NGA Ad.
 // @run-at          document-end
 // @include         ^http*://bbs.nga.cn/*
-// @version         0.0.1
+// @version         0.0.2
 // ==/UserScript==
 
 const hideAd = () => {
