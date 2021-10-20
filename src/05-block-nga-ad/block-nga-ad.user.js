@@ -16,7 +16,17 @@ const hideAd = () => {
   }
 }
 
-hideAd()
+const mutationObserver = new MutationObserver(hideAd)
+mutationObserver.observe(window.document, { childList: true, subtree: true })
 
-// call it again after 3s
-setTimeout(hideAd, 1 * 1000)
+/**
+ * Skip inserted redirect ad page
+ */
+const skipRedirect = () => {
+  // https://bbs.nga.cn/misc/adpage_insert_2.html?5https://bbs.nga.cn/read.php?tid=29010330
+  if (window.location.pathname === '/misc/adpage_insert_2.html') {
+    window.location.href = window.location.search.slice(2)
+  }
+}
+
+skipRedirect()
