@@ -4,6 +4,8 @@
 // @description     Block NGA Ad.
 // @run-at          document-end
 // @include         http*://bbs.nga.cn/*
+// @include         http*://bbs.ngacn.cc/*
+// @include         http*://nga.178.com/*
 // @version         0.0.3
 // ==/UserScript==
 
