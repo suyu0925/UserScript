@@ -3,7 +3,7 @@
 // @namespace   https://github.com/suyu0925/UserScript
 // @author      suyu
 // @version     0.0.1
-// @description 修复PC上特殊时期无法正常浏览帖子的问题。
+// @description 修复PC上特殊时期无法正常浏览帖子的问题，以及自动每日签到刮墙。
 // @license     MIT
 
 // @match       *://bbs.nga.cn/*
@@ -12,7 +12,6 @@
 
 // @require     https://unpkg.com/ajax-hook@2.1.3/dist/ajaxhook.core.min.js
 
-// @grant       GM_registerMenuCommand
 // @grant       GM_setValue
 // @grant       GM_getValue
 // @grant       unsafeWindow
@@ -25,6 +24,7 @@ const { commonui: ui, __CURRENT_UID: uid } = unsafeWindow
 const UserAgent = 'Nga_Official'
 
 const redirectUri = new URLSearchParams(location.search).get('redirectUri')
+const AUTO_CHECK_IN_LAST_TIME_KEY = 'AUTO_CHECK_IN_LAST_TIME_KEY'
 
 const isSameOrigin = (url) => {
   return url.indexOf('/') === 0 || url.indexOf(location.host) >= 0
@@ -80,9 +80,9 @@ const hookDoRequest = () => {
   }
 }
 
-const clearBodyEvent = () =>{
+const clearBodyEvent = () => {
   const temp = document.createElement('DIV')
- 
+
   temp.append(...document.body.childNodes)
 
   document.body.outerHTML = document.body.outerHTML
@@ -112,6 +112,50 @@ const reloadLib = () => {
   })
 }
 
+/**
+ * 自动签到
+ */
+const autoCheckIn = () => {
+  const autoCheckInLastTime = GM_getValue(AUTO_CHECK_IN_LAST_TIME_KEY) || 0
+  if (uid) {
+    const today = new Date()
+    const lastTime = new Date(autoCheckInLastTime)
+    const isToday =
+      lastTime.getDate() === today.getDate() &&
+      lastTime.getMonth() === today.getMonth() &&
+      lastTime.getFullYear() === today.getFullYear()
+    if (!isToday) {
+      fetch(`/nuke.php?__lib=check_in&__act=check_in&lite=js`, {
+        method: 'POST',
+        headers: {
+          'X-User-Agent': UserAgent,
+        },
+      })
+        .then((res) => res.blob())
+        .then((blob) => {
+          const reader = new FileReader()
+
+          reader.onload = () => {
+            const text = reader.result;
+            const result = JSON.parse(
+              text.replace('window.script_muti_get_var_store=', '')
+            );
+
+            const { data, error } = result
+
+            if (data || error) {
+              alert((data || error)[0])
+            }
+
+            GM_setValue(AUTO_CHECK_IN_LAST_TIME_KEY, today.getTime())
+          }
+
+          reader.readAsText(blob, 'GBK')
+        })
+    }
+  }
+}
+
 if (location.pathname === '/') {
   hookAjax()
   hookDoRequest()
@@ -125,3 +169,4 @@ if (location.pathname !== '/' && redirectUri === null) {
 
 clearBodyEvent()
 reloadLib()
+autoCheckIn()
