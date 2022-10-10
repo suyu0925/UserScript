@@ -1,12 +1,17 @@
 // ==UserScript==
 // @name            Block NGA Ad
 // @namespace       https://github.com/suyu0925/UserScript
+// @author          suyu
+// @version         0.0.4
 // @description     Block NGA Ad.
+// @license         MIT
+
+// @match           http*://bbs.nga.cn/*
+// @match           http*://bbs.ngacn.cc/*
+// @match           http*://nga.178.com/*
+
 // @run-at          document-end
-// @include         http*://bbs.nga.cn/*
-// @include         http*://bbs.ngacn.cc/*
-// @include         http*://nga.178.com/*
-// @version         0.0.3
+// @noframes
 // ==/UserScript==
 
 const hideAd = () => {
@@ -24,7 +29,6 @@ const hideAd = () => {
 const skipRedirect = () => {
   // https://bbs.nga.cn/misc/adpage_insert_2.html?5https://bbs.nga.cn/thread.php?fid=-7
   // https://bbs.nga.cn/misc/adpage_insert_2.html?5https://bbs.nga.cn/read.php?tid=29010330
-  console.log('skipRedirect', window.location)
   if (window.location.pathname === '/misc/adpage_insert_2.html') {
     window.location.href = window.location.search.slice(2)
   }
