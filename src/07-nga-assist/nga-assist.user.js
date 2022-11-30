@@ -2,7 +2,7 @@
 // @name        NGA Assist
 // @namespace   https://github.com/suyu0925/UserScript
 // @author      suyu
-// @version     0.0.1
+// @version     0.0.2
 // @description 修复PC上特殊时期无法正常浏览帖子的问题，以及自动每日签到刮墙。
 // @license     MIT
 
@@ -14,6 +14,7 @@
 
 // @grant       GM_setValue
 // @grant       GM_getValue
+// @grant       GM_addStyle
 // @grant       unsafeWindow
 // @noframes
 // ==/UserScript==
@@ -156,6 +157,16 @@ const autoCheckIn = () => {
   }
 }
 
+// 恢复彩色
+const antiGray = () => {
+  document.documentElement.classList.add('no-gray')
+  GM_addStyle(`
+    html.no-gray {
+      filter: unset
+    }
+  `)
+}
+
 if (location.pathname === '/') {
   hookAjax()
   hookDoRequest()
@@ -170,3 +181,4 @@ if (location.pathname !== '/' && redirectUri === null) {
 clearBodyEvent()
 reloadLib()
 autoCheckIn()
+antiGray()
