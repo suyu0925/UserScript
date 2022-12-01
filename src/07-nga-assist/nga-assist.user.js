@@ -3,7 +3,7 @@
 // @namespace   https://github.com/suyu0925/UserScript
 // @author      suyu
 // @version     0.0.3
-// @description 去除广告，以及自动每日签到刮墙。
+// @description 仅自动每日签到刮墙。
 // @license     MIT
 
 // @match       *://bbs.nga.cn/*
