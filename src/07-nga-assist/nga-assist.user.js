@@ -2,8 +2,8 @@
 // @name        NGA Assist
 // @namespace   https://github.com/suyu0925/UserScript
 // @author      suyu
-// @version     0.0.2
-// @description 修复PC上特殊时期无法正常浏览帖子的问题，以及自动每日签到刮墙。
+// @version     0.0.3
+// @description 去除广告，以及自动每日签到刮墙。
 // @license     MIT
 
 // @match       *://bbs.nga.cn/*
@@ -167,18 +167,21 @@ const antiGray = () => {
   `)
 }
 
-if (location.pathname === '/') {
-  hookAjax()
-  hookDoRequest()
+const initHooks = () => {
+  if (location.pathname === '/') {
+    hookAjax()
+    hookDoRequest()
+  }
+
+  // 重定向，让hook生效
+  if (location.pathname !== '/' && redirectUri === null) {
+    location.href = `/?redirectUri=${encodeURIComponent(location.href)}`
+    return
+  }
 }
 
-// 重定向，让hook生效
-if (location.pathname !== '/' && redirectUri === null) {
-  location.href = `/?redirectUri=${encodeURIComponent(location.href)}`
-  return
-}
-
-clearBodyEvent()
-reloadLib()
+// initHooks()
+// clearBodyEvent()
+// reloadLib()
 autoCheckIn()
-antiGray()
+// antiGray()
