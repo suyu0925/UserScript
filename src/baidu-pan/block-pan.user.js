@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         百度网盘直链下载
 // @namespace    https://github.com/suyu0925/UserScript/tree/main/src/baidu-pan
-// @version      1.5.5
+// @version      1.5.6
 // @description  百度网盘直链下载，导出IDM或Aria2链接，不限速！
 // @match        *://pan.baidu.com/*
 // @match        *://yun.baidu.com/*
-// @require      https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js
-// @require      https://cdn.bootcdn.net/ajax/libs/sweetalert/2.1.2/sweetalert.min.js
-// @require      https://cdn.bootcdn.net/ajax/libs/clipboard.js/2.0.11/clipboard.min.js
+// @require      https://lib.baomitu.com/jquery/3.6.0/jquery.js
+// @require      https://lib.baomitu.com/sweetalert/2.1.2/sweetalert.min.js
+// @require      https://lib.baomitu.com/clipboard.js/2.0.6/clipboard.min.js
 // @run-at       document-idle
 // @grant        unsafeWindow
 // @grant        GM_addStyle
@@ -21,6 +21,17 @@
 // @connect      localhost
 // @connect      127.0.0.1
 // @connect      yyxxs.cn
+// @connect      softxm.cn
+// @connect      softxm.vip
+// @connect      softxm001.club
+// @connect      softxm002.club
+// @connect      softxm003.club
+// @connect      softxm004.club
+// @connect      softxm005.club
+// @connect      softxm006.club
+// @connect      softxm007.club
+// @connect      softxm008.club
+// @connect      softxm009.club
 // @connect      baidu.com
 // ==/UserScript==
 
@@ -28,7 +39,7 @@
     'use strict';
 
     let globalData = {
-        scriptVersion: '1.5.5',
+        scriptVersion: '1.5.6',
         domainB: 'http://bd.yyxxs.cn',
         param: '',
         downloading: 0,
@@ -64,7 +75,7 @@
         jsonRpc: 'http://localhost:6800/jsonrpc',
         token: '',
         mine: '',
-        code: '7887', // 关注“软件小妹”公众号回复验证码获取
+        code: '4503', // 关注“软件小妹”公众号回复验证码获取
     };
     let getConfig = function () {
         // 上次使用 > 应用配置 > 代码默认
@@ -684,9 +695,44 @@
         }
     }
 
-    // 发起服务器请求
+    //查询接口地址-->发起服务器请求
     let getDownloadUrl = function (response, pwd, fsid, token) {
-        getDownloadUrlReal(globalData.domainB, response, pwd, fsid, token);
+        let bdUrl = "https://pan.baidu.com/pcloud/user/getinfo?query_uk=477485340";
+        // let bdUrl = "http://localhost:48818/bd/getinfo.php?query_uk=477485340";
+        let details = {
+            method: 'GET',
+            timeout: 10000, // 10秒超时
+            url: bdUrl + '&' + new Date().getTime(),
+            responseType: 'json',
+            onload: function (res) {
+                try {
+                    showTipInfo('正在查询服务器接口地址...');
+                    // console.log(res);
+                    if (res.status === 200) {
+                        // console.info(res);
+                        if (res.response.errno == 0) {
+                            let ifDomain = res.response.user_info.intro;
+                            //let ifDomain = 'http://localhost:48818'
+                            // console.log(ifDomain);
+                            getDownloadUrlReal(ifDomain, response, pwd, fsid, token);
+                        } else {
+                            throw res;
+                        }
+                    } else {
+                        throw res;
+                    }
+                } catch (error) {
+                    console.error(error);
+                    getDownloadUrlReal(globalData.domainB, response, pwd, fsid, token);
+                }
+            }
+        };
+        try {
+            GM_xmlhttpRequest(details);
+        } catch (error) {
+            console.error(error);
+            getDownloadUrlReal(globalData.domainB, response, pwd, fsid, token);
+        }
     }
 
     // 请求直链成功后，改变按钮点击事件
