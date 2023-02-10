@@ -75,7 +75,7 @@
         jsonRpc: 'http://localhost:6800/jsonrpc',
         token: '',
         mine: '',
-        code: '4503', // 关注“软件小妹”公众号回复验证码获取
+        code: '6738', // 关注“软件小妹”公众号回复验证码获取
     };
     let getConfig = function () {
         // 上次使用 > 应用配置 > 代码默认
