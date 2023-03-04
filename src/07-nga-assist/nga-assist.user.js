@@ -2,7 +2,7 @@
 // @name        NGA Assist
 // @namespace   https://github.com/suyu0925/UserScript
 // @author      suyu
-// @version     0.0.3
+// @version     0.0.4
 // @description 仅自动每日签到刮墙。
 // @license     MIT
 
@@ -180,8 +180,8 @@ const initHooks = () => {
   }
 }
 
-// initHooks()
-// clearBodyEvent()
-// reloadLib()
+initHooks()
+clearBodyEvent()
+reloadLib()
 autoCheckIn()
 // antiGray()
