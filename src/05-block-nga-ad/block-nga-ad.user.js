@@ -2,7 +2,7 @@
 // @name            Block NGA Ad
 // @namespace       https://github.com/suyu0925/UserScript
 // @author          suyu
-// @version         0.0.4
+// @version         0.0.5
 // @description     Block NGA Ad.
 // @license         MIT
 
@@ -27,10 +27,9 @@ const hideAd = () => {
  * Skip inserted redirect ad page
  */
 const skipRedirect = () => {
-  // https://bbs.nga.cn/misc/adpage_insert_2.html?5https://bbs.nga.cn/thread.php?fid=-7
-  // https://bbs.nga.cn/misc/adpage_insert_2.html?5https://bbs.nga.cn/read.php?tid=29010330
+  // https://bbs.nga.cn/misc/adpage_insert_2.html?https://bbs.nga.cn/thread.php?fid=-7
   if (window.location.pathname === '/misc/adpage_insert_2.html') {
-    window.location.href = window.location.search.slice(2)
+    window.location.href = window.location.search.slice(1)
   }
 }
 
