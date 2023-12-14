@@ -7,17 +7,21 @@
 // @match           http*://btnull.org/*
 // @match           http*://www.pkmp4.com/*
 // @match           http*://pkmp4.com/*
-// @version         0.0.2
+// @version         0.0.3
 // ==/UserScript==
 
 const hideAd = () => {
   // left
-  const ad_left = document.getElementById('HMcoupletDivleft')
+  const ad_left = document.getElementById('HMhrefleft')
   ad_left.style.display = 'none'
 
   // right
-  const ad_right = document.getElementById('HMcoupletDivright')
+  const ad_right = document.getElementById('HMhrefright')
   ad_right.style.display = 'none'
+
+  // bottom
+  const ad_bottom = document.getElementById('ly')
+  ad_bottom.style.display = 'none'
 
   // rich box
   const ad_rich_box = document.getElementById('HMRichBox')
